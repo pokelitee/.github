@@ -8,6 +8,12 @@ Use a short-lived feature or fix branch and open a pull request into the reposit
 
 Start with the project's README Contributing section and `docs/development.md` for setup, architecture, formatting, and checks. PokéDB and Leak Duck also keep publishing and recovery instructions in `docs/operations.md`. Follow any local agent instructions. Run the relevant checks before opening a pull request, and state anything that could not be verified. Keep package lockfiles or pinned requirements synchronized with dependency changes. Dependency and GitHub Actions updates are reviewed weekly in the maintained application and dataset repositories; upgrades that must happen together should remain grouped.
 
+## GitHub workflows
+
+Use `.yml` files with kebab-case names. Standard entry points are `ci.yml` (CI), `checks.yml` (Checks, when reusable), and `deploy-pages.yml` (Deploy Pages); name project-specific workflows by their task. Keep required status-check names stable when refactoring, and update workflow-name triggers, badges, tests, and documentation together when renaming files or workflows.
+
+Use pinned Actions commits, explicit timeouts, read-only default repository permissions, and scoped write permissions for publishing jobs. Read-only checkouts should not retain credentials. Cancel superseded CI runs, but serialize publishing workflows that share output. Prefer deploying the artifact already validated by CI when practical. Filter expensive deployments to relevant changes while retaining manual dispatch.
+
 ## Generated data and compatibility
 
 Generated `data` branches belong to the publishing workflows. Do not merge them into source branches or edit published datasets by hand. Their history must remain protected against deletion and force pushes. Keep immutable dataset tags intact. A project may publish validated files after partial scraper failures or require a complete snapshot; preserve its documented policy.
